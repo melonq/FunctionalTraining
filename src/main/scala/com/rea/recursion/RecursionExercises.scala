@@ -32,19 +32,25 @@ object RecursionExercises1 {
   def add(a: Int, b: Int): Int = if (a == 0) b else add(minusOne(a), plusOne(b))
 
   // You are not permitted to use any list functions such as map, flatMap, ++, flatten etc
-  def sum(l: List[Int]): Int = l match {
-    case head :: tail => add(head, sum(tail))
-    case Nil => 0
-  }
+//  def sum(l: List[Int]): Int = l match {
+//    case head :: tail => add(head, sum(tail))
+//    case Nil => 0
+//  }
+  def sum(l: List[Int]): Int = general[Int](l => l.head)(l)
 
   //Again no list functions are permitted for the following
   //def length[A](x: List[A]): Int = if (x.isEmpty) 0 else add(1, length(x.tail))
-  def length[A](x: List[A]): Int = x match {
-    case head :: tail => add(1, length(tail))
-    case Nil => 0
-  }
+//  def length[A](x: List[A]): Int = x match {
+//    case head :: tail => add(1, length(tail))
+//    case Nil => 0
+//  }
+  def length(x: List[Int]): Int = general[Int](_ => 1)(x)
 
   // Do you notice anything similar between sum and length? Hmm...
+  def general[A](g: List[A] => Int)(x: List[A]): Int = x match {
+    case head :: tail => add(g(x), general(g)(tail))
+    case Nil => 0
+  }
 
   // Mapping over a list.  You are given a List of type A and a function converting an A to a B
   // and you give back a list of type B.  No list functions allowed!
